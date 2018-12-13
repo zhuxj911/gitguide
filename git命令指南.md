@@ -245,9 +245,24 @@ Git的版本库里存了很多东西，其中最重要的就是称为stage（或
 
 第2步是用`git commit`提交更改，实际上就是把暂存区的所有内容提交到当前分支。
 
- `
+
+```
+$ git add .                                                                     
+warning: LF will be replaced by CRLF in LICENSE.txt.                            
+The file will have its original line endings in your working directory          
+zhuxj@CHINA-20181009K MINGW64 /c/Users/zhuxj/Desktop/git-ex (master)            
+$ git commit -m "add LICENSE.TXT and GPL.jpg"                                   
+[master e673b26] add LICENSE.TXT and GPL.jpg                                    
+5 files changed, 71 insertions(+), 22 deletions(-)                             
+create mode 100644 GPL.jpg                                                     
+create mode 100644 LICENSE.txt                                                 
+create mode 100644 git-files-status.png 
+```
+
+git commit命令成功执行后的示意图：
+
+![git-commit后示意图](.\git-commit.jpg "git-commit后示意图")
 
 
 
-
-
+**暂存区(stage)**是Git非常重要的概念
