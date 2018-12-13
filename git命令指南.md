@@ -148,3 +148,59 @@ Date:   Thu Dec 13 16:09:55 2018 +0800
 
     readme.txt and git-guide.md
 
+或者 
+
+$ git log --pretty=oneline
+9e5e3b17bfc19e1e82eeee34569794ff151b5212 (HEAD -> master) append GPL
+e607fc38e2fe8baef6a16c02deba4e77336249f9 add distributed
+8a3bb697a3f2cd4ad0b43f97f7bdb5968a317a3e readme.txt and git-guide.
+
+$ git log --pretty=oneline
+ec59fbf5593e94451ed09a62a4bb96cdf30d2a76 (HEAD -> master) modified git-guide.md
+9e5e3b17bfc19e1e82eeee34569794ff151b5212 append GPL
+e607fc38e2fe8baef6a16c02deba4e77336249f9 add distributed
+8a3bb697a3f2cd4ad0b43f97f7bdb5968a317a3e readme.txt and git-guide.md
+
+
+在Git中，用:
+  + HEAD表示当前版本，也就是最新的提交
+  + 上一个版本就是HEAD^，
+  + 上上一个版本就是HEAD^^，
+  + 往上100个版本写100个^比较容易数不过来，所以写成HEAD~100
+
+### 5.3 git reset --hard HEAD^
+
+$ git reset --hard HEAD^
+HEAD is now at 9e5e3b1 append GPL
+
+$ git reset --hard HEAD^
+HEAD is now at e607fc3 add 
+
+$ git reset --hard ec59f
+HEAD is now at ec59fbf modified git-guide.md
+
+
+### 5.4 git reflog
+$ git reflog
+ec59fbf (HEAD -> master) HEAD@{0}: reset: moving to ec59f
+e607fc3 HEAD@{1}: reset: moving to HEAD^
+9e5e3b1 HEAD@{2}: reset: moving to HEAD^
+ec59fbf (HEAD -> master) HEAD@{3}: commit: modified git-guide.md
+9e5e3b1 HEAD@{4}: commit: append GPL
+e607fc3 HEAD@{5}: commit: add distributed
+8a3bb69 HEAD@{6}: commit (initial): readme.txt and git-guide.md
+
+## 6 版本库（Repository）
+工作区有一个隐藏目录.git，这个不算工作区，而是Git的版本库。
+Git的版本库里存了很多东西，其中最重要的就是称为stage（或者叫index）的暂存区，还有Git为我们自动创建的第一个分支master，以及指向master的一个指针叫HEAD。
+
+![git工作区与版本库](.\git-repository.jpg "git工作区与版本库")
+
+把文件往Git版本库里添加的时候，是分两步执行的：
+
+第1步是用`git add`把文件添加进去，实际上就是把文件修改添加到暂存区； 
+
+第2步是用`git commit`提交更改，实际上就是把暂存区的所有内容提交到当前分支。
+
+
+
