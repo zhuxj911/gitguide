@@ -211,6 +211,9 @@ e607fc3 HEAD@{5}: commit: add distributed
 ```
 
 ## 6 版本库（Repository）
+
+### 6.1 工作区与暂存区
+
 工作区有一个隐藏目录.git，它是Git的版本库。
 
 ![git工作区文件状态](.\git-files-status.png "git工作区文件状态")
@@ -266,3 +269,188 @@ git commit命令成功执行后的示意图：
 
 
 **暂存区(stage)**是Git非常重要的概念
+
+### 6.2 管理修改
+
+**Git跟踪并管理的是修改，而非文件**
+
+将readme.txt中第3行中的multable改为mutable，添加 一行：
+
+Git tracks changes.
+
+则有：
+
++ 未做 ***git add .*** 命令前：
+
+```
+$ git status                                                                    
+On branch master                                                                
+Changes not staged for commit:                                                  
+(use "git add ..." to update what will be committed)                    
+(use "git checkout -- ..." to discard changes in working directory)     
+modified:   "git\345\221\275\344\273\244\346\214\207\345\215\227.md"    
+modified:   readme.txt                                                  
+Untracked files:                                                                
+(use "git add ..." to include in what will be committed)                
+git-commit.jpg                                                          
+no changes added to commit (use "git add" and/or "git commit -a")     
+```
+查看文件readme.txt的差异：
+```
+$ git diff readme.txt                                                           
+diff --git a/readme.txt b/readme.txt                                            
+index bffec1e..db28b2c 100644                                                   
+--- a/readme.txt                                                                
++++ b/readme.txt                                                                
+@@ -1,3 +1,4 @@                                                                 
+Git is a distributed version control system.                                   
+Git is free software distributed under the GPL.                                
+-Git has a multable index called stage.                                         
+\ No newline at end of file                                                     
++Git has a mutable index called stage.                                          
++Git tracks changes.                                                            
+\ No newline at end of file 
+```
+
+执行 ***git add .*** 命令后：
+```
+$ git add .                                                             
+$ git status                                                                    
+On branch master                                                                
+Changes to be committed:                                                        
+(use "git reset HEAD ..." to unstage)                                   
+new file:   git-commit.jpg                                              
+modified:   "git\345\221\275\344\273\244\346\214\207\345\215\227.md"    
+modified:   readme.txt                                                  ```
+```
+
+再次修改再修改readme.txt中最后一行为Git tracks changes of files.
+
+查看：
+
+```
+$ git status
+On branch master
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+        new file:   git-commit.jpg
+        modified:   "git\345\221\275\344\273\244\346\214\207\345\215\227.md"
+        modified:   readme.txt
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+        modified:   readme.txt
+```
+
+然后提交：
+
+```
+
+```
+
+再查看                                                    
+```
+$ git status 
+On branch master                                                                
+Changes not staged for commit:                                                  
+(use "git add ..." to update what will be committed)                    
+(use "git checkout -- ..." to discard changes in working directory)     
+modified:   readme.txt                                                  
+no changes added to commit (use "git add" and/or "git commit -a")        
+```
+
+则第二次修改的未进行提交。
+
+说明：git commit 只提交stage中的修改。
+
+用命令可以查看：
+
+```
+
+```
+
+正确的执行应为：
+
+第一次修改 -> `git add` -> 第二次修改 -> `git add` -> `git commit`
+
+**每次修改，如果不用`git add`到暂存区，那就不会加入到`commit`中**
+
+
+
+### 6.3  撤销修改
+
+如果在readme.txt尾添加一句：My stupid boss still prefers SVN.
+
+后边想删除它，则：
+
++ 未git add时（修改还没有 add 到暂存区）：
+
+```
+   $ git status                                                                    
+  On branch master                                                                
+  Changes not staged for commit:                                                  
+  (use "git add ..." to update what will be committed)                    
+  (use "git checkout -- ..." to discard changes in working directory)     
+  modified:   readme.txt                                                  
+  no changes added to commit (use "git add" and/or "git commit -a")     
+```
+
+则可以：
+
+```
+$ git checkout -- readme.txt
+
+```
+
++ 已经git add时（修改已经 add 到暂存区）：
+
+  ```
+  $ git add .
+  $ git status
+  On branch master
+  Changes to be committed:
+    (use "git reset HEAD <file>..." to unstage)
+  
+          modified:   "git\345\221\275\344\273\244\346\214\207\345\215\227.md"
+          modified:   readme.txt
+  ```
+
+  需用 命令`git reset HEAD <file>`把暂存区的修改撤销掉（unstage），
+
+  再 git checkout -- readme.txt 可将最后添加的修改删除。 
+
+```
+$ git reset HEAD readme.txt
+Unstaged changes after reset:
+M       readme.txt
+
+$ git status
+On branch master
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+        modified:   "git\345\221\275\344\273\244\346\214\207\345\215\227.md"
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+        modified:   readme.txt
+```
+
+
+
++ 场景1：
+
+  当你改乱了工作区某个文件的内容，想直接丢弃工作区的修改时，用命令`git checkout -- file`。
+
++ 场景2：
+
+  当你不但改乱了工作区某个文件的内容，还添加到了暂存区时，想丢弃修改，分两步，第一步用命令`git reset HEAD <file>`，就回到了场景1，第二步按场景1操作。
+
++ 场景3：
+
+  已经提交了不合适的修改到版本库时，想要撤销本次提交，参考版本回退，不过前提是没有推送到远程库。
