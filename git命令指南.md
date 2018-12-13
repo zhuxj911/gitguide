@@ -6,7 +6,10 @@ $ git config user.name "zhuxj"
 $ git config user.email "xazhuxj@qq.com"
 ```
 
+本文档素材来自 [廖雪峰的官方网站之Git教程](https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000)。
+
 ## 1 git init 
+
 作用：建立git版本库(repository)
 
 在当前文件夹下会建一个文件夹 .git 作为git的版本库
@@ -441,8 +444,6 @@ Changes not staged for commit:
         modified:   readme.txt
 ```
 
-
-
 + 场景1：
 
   当你改乱了工作区某个文件的内容，想直接丢弃工作区的修改时，用命令`git checkout -- file`。
@@ -454,3 +455,51 @@ Changes not staged for commit:
 + 场景3：
 
   已经提交了不合适的修改到版本库时，想要撤销本次提交，参考版本回退，不过前提是没有推送到远程库。
+
+### 6.3 删除文件
+
+准备工作：
+
+```
+$ vim test.txt
+
+$ git add test.txt
+warning: LF will be replaced by CRLF in test.txt.
+The file will have its original line endings in your working directory
+
+$ git commit -m "add test.txt"
+[master 327aa24] add test.txt
+ 1 file changed, 1 insertion(+)
+ create mode 100644 test.txt
+```
+
+现操作如下：
+
+```
+$ rm test.txt
+
+```
+
++ 删错了，可用版本库里的版本替换工作区的版
+
+  git checkout -- test.txt
+
++ 确实需从版本库中删除该文件，用git rm命令，然后git commit
+
+  ```
+  $ git status
+  On branch master
+  Changes to be committed:
+    (use "git reset HEAD <file>..." to unstage)
+  
+          deleted:    test.txt
+  
+  Changes not staged for commit:
+    (use "git add <file>..." to update what will be committed)
+    (use "git checkout -- <file>..." to discard changes in working directory)
+  
+          modified:   "git\345\221\275\344\273\244\346\214\207\345\215\227.md"
+  ```
+
+  命令`git rm`用于删除一个文件。如果一个文件已经被提交到版本库，那么你永远不用担心误删，但是要小心，你只能恢复文件到最新版本，你会丢失**最近一次提交后你修改的内容**。
+
