@@ -79,10 +79,12 @@ $ git commit -m "readme.txt and git-guide.md"
  git commit 命令后的 -m "****" 必须写
 
  ## 5 时光穿梭
+
+ ### 5.1 准备
  将readme.txt的第一行修改为Git is a distributed version control system.
 （比原来多了一个distributed）
 
-查看状态为：
++ (1) 查看状态为：
 $ git status
 On branch master
 Changes not staged for commit:
@@ -94,7 +96,7 @@ Changes not staged for commit:
 
 no changes added to commit (use "git add" and/or "git commit -a")
 
-查看readme.txt的修改情况：
++ (2) 查看readme.txt的修改情况：
 $ git diff readme.txt
 warning: LF will be replaced by CRLF in readme.txt.
 The file will have its original line endings in your working directory.
@@ -106,3 +108,43 @@ index 46d49bf..9247db6 100644
 -Git is a version control system.
 +Git is a distributed version control system.
  Git is free software.
+
++ (3) 添加修改后的文件：
+
+$ git add readme.txt
+warning: LF will be replaced by CRLF in readme.txt.
+The file will have its original line endings in your working directory.
+
++ (4) 再次提交
+$ git add git命令指南.md
+
+$ git commit -m  "add distributed"
+[master e607fc3] add distributed
+ 2 files changed, 91 insertions(+), 7 deletions(-)
+
++ (5) 再次修改提交
+  将readme.txt文件第2行修改为：
+  Git is free software distributed under the GPL.
+  再次git add 与 git commit -m "append GPL"
+
+### 5.2 git log
+
+$ git log
+commit 9e5e3b17bfc19e1e82eeee34569794ff151b5212 (HEAD -> master)
+Author: zhuxj <xazhuxj@qq.com>
+Date:   Thu Dec 13 16:31:42 2018 +0800
+
+    append GPL
+
+commit e607fc38e2fe8baef6a16c02deba4e77336249f9
+Author: zhuxj <xazhuxj@qq.com>
+Date:   Thu Dec 13 16:22:24 2018 +0800
+
+    add distributed
+
+commit 8a3bb697a3f2cd4ad0b43f97f7bdb5968a317a3e
+Author: zhuxj <xazhuxj@qq.com>
+Date:   Thu Dec 13 16:09:55 2018 +0800
+
+    readme.txt and git-guide.md
+
